@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FLVX</title>
+  <link rel="icon" type="image/png" href="logo putih.png" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+    * {
+      font-family: 'IBM Plex Mono', monospace !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background-color: #000000;   /* inverted */
+      color: #fff;              /* inverted */
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content {
+      width: 100%;
+      text-align: justify;
+      color: #fff; /* ensure text stays white */
+    }
+
+    .logo {
+      max-width: 100%;
+      width: 250px;
+      height: auto;
+      margin-bottom: 30px;
+      filter: invert(1); /* invert logo too */
+    }
+
+    .nav {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    #typingText {
+      border-right: 2px solid white; /* inverted */
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      color: #fff;
+    }
+
+    a {
+      position: relative;
+      color: white;               /* inverted */
+      text-decoration: underline;
+      padding: 2px 4px;
+      z-index: 1;
+      transition: color 0.2s ease-in-out;
+    }
+
+    a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;          /* inverted */
+      border: 2px solid white;    /* inverted */
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.3s ease-in-out;
+      z-index: -1;
+    }
+
+    a:hover,
+    a:active {
+      color: black;               /* inverted */
+    }
+
+    a:hover::before,
+    a:active::before {
+      transform: scaleY(1);
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+      text-align: left;
+      color: #fff;
+    }
+
+    footer {
+      font-size: 12px;
+      color: #ffffff;   /* inverted */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-top: 250px;
+    }
+
+    #langToggle {
+      background: none;
+      border: none;
+      color: white;                /* inverted */
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      user-select: none;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nav">
+      <span id="typingText"></span>
+    </div>
+
+    <img src="logo.png" alt="Logo" class="logo" />
+
+    <div class="content">
+      <p id="para1"></p>
+
+      <ul>
+        <li><a href="showcase.html" id="link1"></a></li>
+        <li><a href="https://www.instagram.com/flvxprjct/" id="link4" target="_blank" rel="noopener noreferrer"></a></li>
+      </ul>
+    </div>
+
+    <footer>
+      <button id="langToggle" aria-label="Toggle language"></button>
+      <span>&copy; 2025 FLVXPRJCT. All rights reserved.</span>
+    </footer>
+  </div>
+
+  <script>
+    /* Typing Animation */
+    const texts = ["flvx_project", "24x72xx3", "flvxxvlf", "xxxflvx", "21x42x21"];
+    const target = document.getElementById("typingText");
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function type() {
+      const currentText = texts[textIndex];
+      if (!isDeleting) {
+        target.textContent = currentText.substring(0, charIndex) + (charIndex < currentText.length ? '|' : '');
+        if (charIndex < currentText.length) {
+          charIndex++;
+          setTimeout(type, 100);
+        } else {
+          isDeleting = true;
+          setTimeout(type, 2000);
+        }
+      } else {
+        target.textContent = currentText.substring(0, charIndex) + '|';
+        if (charIndex > 0) {
+          charIndex--;
+          setTimeout(type, 50);
+        } else {
+          isDeleting = false;
+          textIndex = (textIndex + 1) % texts.length;
+          setTimeout(type, 500);
+        }
+      }
+    }
+
+    type();
+
+    /* Language System */
+    const langToggle = document.getElementById('langToggle');
+
+    const textsBahasa = {
+      para1: '<a href="https://www.instagram.com/flvxprjct/" target="_blank"><strong>FLVX</strong></a>, dia adalah seorang digital artist yang memulai proyek pertamanya pada tahun 2021, bermula dari seorang desainer grafis kini ia juga memulai karirnya sebagai seorang illustrator.',
+      link1: "<strong>Showcase</strong>",
+      link4: "Instagram",
+      langBtn: "English"
+    };
+
+    const textsEnglish = {
+      para1: '<a href="https://www.instagram.com/flvxprjct/" target="_blank"><strong>FLVX</strong></a>, He is a digital artist who started his first project in 2021. Beginning as a graphic designer, he has now also started his career as an illustrator.',
+      link1: "<strong>Showcase</strong>",
+      link4: "Instagram",
+      langBtn: "Bahasa"
+    };
+
+    let isBahasa = false; // default = English
+
+    function applyLanguage() {
+      const lang = isBahasa ? textsBahasa : textsEnglish;
+      document.getElementById('para1').innerHTML = lang.para1;
+      document.getElementById('link1').innerHTML = lang.link1;
+      document.getElementById('link4').textContent = lang.link4;
+      langToggle.textContent = lang.langBtn;
+    }
+
+    applyLanguage();
+
+    langToggle.addEventListener('click', () => {
+      isBahasa = !isBahasa;
+      applyLanguage();
+    });
+  </script>
+</body>
+</html>
